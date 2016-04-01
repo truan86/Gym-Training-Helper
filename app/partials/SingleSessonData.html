@@ -1,0 +1,18 @@
+<div class="table-responsive">
+    <table class="table table-striped">
+        <tr>
+            <th>Workout step</th>
+            <th>Planned</th>
+            <th>Weight</th>
+            <th>Actual</th>
+            <th>Difference</th>
+        </tr>
+        <tr ng-repeat="stap in single.sessions">
+            <td>{{stap.name}}{{stap.time}}</td>
+            <td>{{stap.planned}}{{step.option}}</td>
+            <td>{{stap.weight}}</td>
+            <td>{{stap.actual}}{{step.option}}</td>
+            <td>{{stap.actual *100 /stap.planned|number:0}}%</td>
+        </tr>
+    </table>
+</div>
