@@ -6,6 +6,12 @@ class Service {
         else {
             this.sessions = [];
         }
+        if (localStorage.namesWorkout) {
+            this.namesWorkout = angular.fromJson(localStorage.namesWorkout)
+        }
+        else{
+            this.namesWorkout = [];
+        }
         this.chooseSession = false;
     }
 }

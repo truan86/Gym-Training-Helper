@@ -11,6 +11,7 @@ const gulp = require('gulp'),
     ngAnnotate = require('gulp-ng-annotate'),
     stringify = require('stringify'),
     gutil = require('gutil'),
+    uglify = require('gulp-uglify'),
     buffer = require('vinyl-buffer');
 
 gulp.task('default', ['build']);
@@ -46,6 +47,7 @@ gulp.task('scripts', () => {
         .pipe(source('index.js'))
         .pipe(buffer())
         .pipe(ngAnnotate())
+        .pipe(uglify())
         .pipe(gulp.dest('dist/js'));
 });
 

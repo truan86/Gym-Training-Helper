@@ -1,3 +1,5 @@
+import checkForSame from './checkForSame';
+
 class NewSessionController {
     constructor(Service, $state) {
         this.showFormNewStep = false;
@@ -13,31 +15,31 @@ class NewSessionController {
             this.staps = [];
         }
         this.finish = function () {
+            checkForSame(this.staps, Service.namesWorkout);
             Service.sessions.push({"session": this.staps, "time": new Date()});
             localStorage.sessions = angular.toJson(Service.sessions);
             localStorage.removeItem("stepsNewSession");
             $state.go('home');
-        }
+        };
+        this.getAllWorkoutNames = Service.namesWorkout;
     }
 
     formSubmit() {
         if (this.stapWeight == undefined) {
             this.stapWeight = 0;
         }
-        this.addNewStep(this.stapName, this.stapPlanned, this.stapWeight, this.stapOption, this.stapActual);
+        this.addNewStep(this.stapName, this.stapPlanned,this.stapOption, this.stapActual);
         this.showFormNewStep = false;
         this.showInputNewStep = true;
         this.showAddNewStepButton = true;
         this.showFinishBtn = true;
     };
 
-
-    addNewStep(name, planned, weight, option, actual) {
+    addNewStep(name, planned, option, actual) {
         this.staps.push({
             "name": name,
             "planned": planned,
             "option": option,
-            "weight": weight + "KG",
             "actual": actual
         });
         this.save(this.staps);
@@ -57,14 +59,5 @@ class NewSessionController {
         this.showAddNewStepButton = false;
         this.showFinishBtn = false;
     }
-
-    getAllWorkoutStep() {
-        let allWoroutName = [];
-        this.staps.forEach(function (item) {
-            allWoroutName.push(item.name);
-        });
-        return allWoroutName;
-    }
-
 }
 export default NewSessionController;
