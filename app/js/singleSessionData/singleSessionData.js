@@ -10,12 +10,21 @@ class SingleSessionDataController {
 
 
         this.labels = this.stapNames(this.sessions);
-        this.series = ['Planned', 'Actual', 'Progress'];
-        this.data = [
-            [10, 59],
-            [28, 48],
-            [24, 54]
-        ];
+        this.series = ['Planned', 'Actual', 'Difference'];
+        this.data = this.dataSession(this.sessions);
+    }
+
+    dataSession(sessions) {
+        let planned = [];
+        let actual = [];
+        let progress = [];
+        sessions.forEach(function (item) {
+            progress.push(Math.abs(item.planned - item.actual));
+            planned.push(item.planned);
+            actual.push(item.actual);
+        });
+        let data = [planned, actual, progress];
+        return data;
     }
 
     stapNames(sessions) {

@@ -7,23 +7,26 @@ import angularChart from 'angular-chart.js';
 import homeTemplate from '../partials/home.html';
 import newSessionTemplate from '../partials/newSession.html';
 import singleSessionDataTemplate from '../partials/SingleSessonData.html';
+import resultsTemplate from '../partials/results.html';
 
-import HomeController from '../js/home/home.js';
+import HomeController from '../js/home/home';
 import NewSessionController from '../js/newSession/session';
 import SingleSessionDataController from '../js/singleSessionData/singleSessionData';
-import Service from '../js/service/service.js';
+import ResultsController from '../js/results/results'
+import Service from '../js/service/service';
 
 
 angular.module('app', [angularUiRouter, angularUiBootstrap, "chart.js"])
     .controller('HomeController', ['Service', '$state', HomeController]) //'Service','$state' for uglyfy Js
     .controller('NewSessionController', ['Service', '$state', NewSessionController])
     .controller('SingleSessionDataController', ['Service', '$state', SingleSessionDataController])
+    .controller('ResultsController', ['Service', '$state', ResultsController])
     .service('Service', Service)
     .config(appConfig)
     .config(['ChartJsProvider', function (ChartJsProvider) {
         ChartJsProvider.setOptions({
             colours: ['#803690', '#00ADF9', '#DCDCDC', '#46BFBD', '#FDB45C', '#949FB1', '#4D5360'],
-            responsive: false
+            responsive: true
         });
     }]);
 
@@ -47,5 +50,10 @@ function appConfig($stateProvider, $urlRouterProvider) {
             url: '/single',
             template: singleSessionDataTemplate,
             controller: 'SingleSessionDataController as single'
+        })
+        .state('results', {
+            url: '/results',
+            template: resultsTemplate,
+            controller: 'ResultsController as results'
         })
 }

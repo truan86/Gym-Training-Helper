@@ -1,12 +1,17 @@
-import checkForSame from './checkForSame';
-
 class NewSessionController {
     constructor(Service, $state) {
+        if (localStorage.stepsNewSession) {
+            this.showFinishBtn = true;
+        }
+        else {
+            this.showFinishBtn = false;
+        }
         this.showFormNewStep = false;
         this.showAddNewStepButton = true;
         this.showInputNewStep = true;
-        this.disableStart = true;
-        this.showFinishBtn = false;
+        this.disableStart = false;
+        this.stapOption = 'Minutes';
+        this.stapActual = 0;
 
         if (localStorage.stepsNewSession) {
             this.staps = angular.fromJson(localStorage.stepsNewSession);
@@ -15,7 +20,7 @@ class NewSessionController {
             this.staps = [];
         }
         this.finish = function () {
-            checkForSame(this.staps, Service.namesWorkout);
+            Service.checkForSame(this.staps, Service.namesWorkout);
             Service.sessions.push({"session": this.staps, "time": new Date()});
             localStorage.sessions = angular.toJson(Service.sessions);
             localStorage.removeItem("stepsNewSession");
@@ -28,11 +33,13 @@ class NewSessionController {
         if (this.stapWeight == undefined) {
             this.stapWeight = 0;
         }
-        this.addNewStep(this.stapName, this.stapPlanned,this.stapOption, this.stapActual);
+        this.addNewStep(this.stapName, this.stapPlanned, this.stapOption, this.stapActual);
         this.showFormNewStep = false;
         this.showInputNewStep = true;
         this.showAddNewStepButton = true;
         this.showFinishBtn = true;
+        this.stapName = "";
+        this.stapPlanned = "";
     };
 
     addNewStep(name, planned, option, actual) {
