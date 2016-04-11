@@ -4,14 +4,14 @@ class SingleSessionDataController {
             $state.go('home');
         }
         else {
-            this.sessions = Service.sessions[Service.chooseSession].session;
+            this.session = Service.sessions[Service.chooseSession].session;
             this.sessionTime = Service.sessions[Service.chooseSession].time;
         }
 
 
-        this.labels = this.stapNames(this.sessions);
+        this.labels = this.namesOfSteps(this.session);
         this.series = ['Planned', 'Actual', 'Difference'];
-        this.data = this.dataSession(this.sessions);
+        this.data = this.dataSession(this.session);
     }
 
     dataSession(sessions) {
@@ -27,9 +27,9 @@ class SingleSessionDataController {
         return data;
     }
 
-    stapNames(sessions) {
+    namesOfSteps(session) {
         let names = [];
-        sessions.forEach(function (item) {
+        session.forEach(function (item) {
             names.push(item.name);
         });
         return names;

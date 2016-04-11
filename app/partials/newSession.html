@@ -1,61 +1,55 @@
 <h1>new session</h1>
-<div class="row">
-    <div class="newSession table-responsive">
-        <form ng-submit="new.formSubmit()" name="myForm">
-            <table class="table table-striped">
-                <tr>
-                    <th>Workout step</th>
-                    <th>Planned</th>
-                    <th>Actual</th>
-                    <th>Progress</th>
-                </tr>
-                <tr ng-repeat="step in new.staps">
-                    <td>{{step.name}}{{step.time}}</td>
-                    <td>{{step.planned}}{{step.option}}</td>
-                    <td>{{step.actual}}{{step.option}}</td>
-                    <td>{{ step.actual *100 /step.planned|number:0}}%</td>
-                </tr>
-                <tr ng-show="new.showFormNewStep">
-                    <td>
-                        <input ng-show="new.showInputNewStep" ng-model="new.stapName" type="text"
-                               autocomplete="off"
-                               uib-typeahead="state for state in new.getAllWorkoutNames|filter:$viewValue"
-                               class="form-control"
-                               id="WorkoutStep" placeholder="WorkoutStep" required>
-                        <div ng-hide="new.showInputNewStep">{{new.stapName}}</div>
-                    </td>
-                    <td>
-                        <select ng-show="new.showInputNewStep" ng-model="new.stapOption" class="form-control">
-                            <option>Times</option>
-                            <option>Minutes</option>
-                            <option>Weight</option>
-                        </select>
-                        <input ng-show="new.showInputNewStep" ng-model="new.stapPlanned" class="selecttime form-control"
-                               placeholder="0"
-                               type="number" min="0"
-                               required>
-                        <div ng-hide="new.showInputNewStep"> {{new.stapPlanned}}{{new.stapOption}}</div>
-                    </td>
-                    <td>
-                        <input ng-disabled="new.disableStart" ng-show="new.showInputNewStep"
-                               type="button"
-                               ng-click="new.start()" value="start"
-                               class="btn btn-success">
-                        <input placeholder="Actual" ng-hide="new.showInputNewStep" ng-model="new.stapActual"
-                               class="form-control"
-                               type="number" min="0" required>
-                    </td>
-                    <td>
-                        <button ng-hide="new.showInputNewStep" class="btn btn-success">
-                            finish step
-                        </button>
-                    </td>
-                </tr>
-            </table>
-        </form>
-        <button ng-show="new.showAddNewStepButton" class="btn btn-default" ng-click="new.showNewStep()">
-            add new step
-        </button>
-        <button ng-show="new.showFinishBtn" class="btn btn-default" ng-click="new.finish()">Finish</button>
+
+<div class="newSession ">
+    <div class="table-responsive">
+        <table ng-show="new.showTableSteps" class="table table-striped">
+            <tr>
+                <th>Workout step</th>
+                <th>Planned</th>
+                <th>Actual</th>
+                <th>Progress</th>
+            </tr>
+            <tr ng-repeat="step in new.staps">
+                <td>{{step.name}}{{step.time}}</td>
+                <td>{{step.planned}}{{step.option}}</td>
+                <td>{{step.actual}}{{step.option}}</td>
+                <td>{{ step.actual *100 /step.planned|number:0}}%</td>
+            </tr>
+        </table>
     </div>
+
+    <form class=" form-inline" ng-show="new.showFormNewStep" ng-submit="new.start()" name="formStart">
+        <input ng-model="new.stapName" type="text"
+               autocomplete="off"
+               uib-typeahead="state for state in new.getAllWorkoutNames|filter:$viewValue"
+               class="form-control "
+               id="WorkoutStep" placeholder="WorkoutStep" required>
+        <select ng-model="new.stapOption" class="form-control">
+            <option>Times</option>
+            <option>Minutes</option>
+            <option>Weight</option>
+        </select>
+        <input ng-model="new.stapPlanned"
+               class="selecttime form-control"
+               placeholder="Planed"
+               type="number" min="0"
+               required>
+        <button ng-disabled="!(formStart.$valid)"
+                class="btn btn-success ">Start
+        </button>
+    </form>
+
+    <form class="form-inline" name="formFinish" ng-show="new.showFormFinishStep" ng-submit="new.formSubmit()">
+        <input placeholder="Your result" ng-model="new.stapActual"
+               class="form-control"
+               type="number" min="0" required>
+        <button ng-disabled="!(formFinish.$valid)" class="btn btn-success">
+            finish step
+        </button>
+    </form>
+
+    <button ng-show="new.showAddNewStepButton" class="btn btn-default" ng-click="new.showNewStep()">
+        add new step
+    </button>
+    <button ng-show="new.showFinishBtn" class="btn btn-default" ng-click="new.finish()">Finish</button>
 </div>

@@ -1,17 +1,17 @@
 class NewSessionController {
-    constructor(Service, $state) {
+    constructor($http, Service, $state) {
         if (localStorage.stepsNewSession) {
             this.showFinishBtn = true;
+            this.showTableSteps = true;
         }
         else {
             this.showFinishBtn = false;
+            this.showTableSteps = false;
         }
         this.showFormNewStep = false;
         this.showAddNewStepButton = true;
-        this.showInputNewStep = true;
-        this.disableStart = false;
+        this.showFormFinishStep = false;
         this.stapOption = 'Minutes';
-        this.stapActual = 0;
 
         if (localStorage.stepsNewSession) {
             this.staps = angular.fromJson(localStorage.stepsNewSession);
@@ -24,6 +24,22 @@ class NewSessionController {
             Service.sessions.push({"session": this.staps, "time": new Date()});
             localStorage.sessions = angular.toJson(Service.sessions);
             localStorage.removeItem("stepsNewSession");
+
+            $http.post('/synchron', {
+                    "sessions": Service.sessions,
+                    "workoutNames": Service.namesWorkout,
+                    "name": Service.user.name,
+                    "password": Service.user.password
+                })
+                .success(function (data) {
+                    localStorage.sessions = angular.toJson(data.sessions);
+                    localStorage.namesWorkout = angular.toJson(data.workoutNames);
+                    Service.sessions = data.sessions;
+                    Service.namesWorkout = data.workoutNames;
+                })
+                .error(function () {
+                    console.log('err');
+                });
             $state.go('home');
         };
         this.getAllWorkoutNames = Service.namesWorkout;
@@ -34,12 +50,14 @@ class NewSessionController {
             this.stapWeight = 0;
         }
         this.addNewStep(this.stapName, this.stapPlanned, this.stapOption, this.stapActual);
+        this.showTableSteps = true;
         this.showFormNewStep = false;
-        this.showInputNewStep = true;
+        this.showFormFinishStep = false;
         this.showAddNewStepButton = true;
         this.showFinishBtn = true;
         this.stapName = "";
         this.stapPlanned = "";
+        this.stapActual = "";
     };
 
     addNewStep(name, planned, option, actual) {
@@ -54,7 +72,8 @@ class NewSessionController {
     }
 
     start() {
-        this.showInputNewStep = false;
+        this.showFormNewStep = false;
+        this.showFormFinishStep = true;
     }
 
     save(data) {

@@ -1,18 +1,18 @@
 <h1>results</h1>
 <div class="table-responsive">
-    <table class="table table-hover">
+    <table class="table table-bordered">
         <tr>
             <td>workout staps</td>
             <td ng-repeat="session in results.sessions">{{session.time|date:"EEEE, MMMM d"}}</td>
         </tr>
         <tr ng-repeat="result in results.sessionsResults">
             <td>{{result.name}}</td>
-            <td ng-repeat="value in result.values">{{value.value}}</td>
+            <td ng-repeat="value in result.values">{{value.value}} {{value.option}}</td>
         </tr>
     </table>
 </div>
 <div class="col-lg-offset-2 col-lg-8">
     <canvas id="line" class="chart chart-line" chart-data="results.data"
-            chart-labels="results.labels" chart-legend="true" chart-series="results.series">
+            chart-labels="results.labels | date:'medium'" chart-legend="true" chart-series="results.series">
     </canvas>
 </div>

@@ -8,7 +8,7 @@ class ResultsController {
         this.sessions = Service.sessions;
         this.sessionsResults = Service.chooseByTime(this.sessions, Service.namesWorkout);
         this.labels = Service.times(this.sessions);
-        this.series =  Service.namesWorkout;
+        this.series = Service.namesWorkout;
         this.data = Service.dataForLineChart(this.sessionsResults);
     }
 }

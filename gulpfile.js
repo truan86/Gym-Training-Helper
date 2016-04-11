@@ -47,7 +47,7 @@ gulp.task('scripts', () => {
         .pipe(source('index.js'))
         .pipe(buffer())
         .pipe(ngAnnotate())
-        //.pipe(uglify())
+        .pipe(uglify())
         .pipe(gulp.dest('dist/js'));
 });
 

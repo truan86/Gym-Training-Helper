@@ -17,8 +17,8 @@ import Service from '../js/service/service';
 
 
 angular.module('app', [angularUiRouter, angularUiBootstrap, "chart.js"])
-    .controller('HomeController', ['Service', '$state', HomeController]) //'Service','$state' for uglyfy Js
-    .controller('NewSessionController', ['Service', '$state', NewSessionController])
+    .controller('HomeController', ['$http', 'Service', '$state', HomeController]) //for uglyfy Js
+    .controller('NewSessionController', ['$http','Service', '$state', NewSessionController])
     .controller('SingleSessionDataController', ['Service', '$state', SingleSessionDataController])
     .controller('ResultsController', ['Service', '$state', ResultsController])
     .service('Service', Service)
@@ -31,7 +31,7 @@ angular.module('app', [angularUiRouter, angularUiBootstrap, "chart.js"])
     }]);
 
 
-appConfig.$inject = ['$stateProvider', '$urlRouterProvider'];//for ugly js
+appConfig.$inject = ['$stateProvider', '$urlRouterProvider'];//for uglyfy js
 
 function appConfig($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/');

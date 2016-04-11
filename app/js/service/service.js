@@ -1,7 +1,14 @@
 class Service {
     constructor() {
+        let here = this;
+        this.user = {};
+        this.areYouLogin = false;
+        if (localStorage.user) {
+            this.areYouLogin = true;
+            this.user = angular.fromJson(localStorage.user);
+        }
         if (localStorage.sessions) {
-            this.sessions = angular.fromJson(localStorage.sessions)
+            this.sessions = angular.fromJson(localStorage.sessions);
         }
         else {
             this.sessions = [];
@@ -12,8 +19,13 @@ class Service {
         else {
             this.namesWorkout = [];
         }
-        this.chooseSession = false;
 
+        if (localStorage.chooseSession) {
+            this.chooseSession = angular.fromJson(localStorage.chooseSession)
+        }
+        else {
+            this.chooseSession = false;
+        }
         this.checkForSame = function (steps, namesWorkout) {
             steps.forEach(function (step) {
                 let count = 0;
@@ -26,6 +38,7 @@ class Service {
                     namesWorkout.push(step.name)
                 }
             });
+
             localStorage.namesWorkout = angular.toJson(namesWorkout);
         };
     }
@@ -33,8 +46,12 @@ class Service {
     times(sessions) {
         let time = [];
         sessions.forEach(function (session) {
-            let dateFormat = session.time.toString().slice(0, 10);
-            time.push(dateFormat)
+            let date = new Date(session.time);
+            var curr_date = date.getDate();
+            var curr_month = date.getMonth() + 1;
+            var curr_year = date.getFullYear();
+
+            time.push(curr_date + ":" + curr_month + ":" + curr_year);
         });
         return time;
     }
@@ -47,12 +64,12 @@ class Service {
                 let count = 0;
                 session.session.forEach(function (steps) {
                     if (name == steps.name) {
-                        values.push({"value": steps.actual});
+                        values.push({"value": steps.actual, "option": steps.option});
                         count++;
                     }
                 });
                 if (count == 0) {
-                    values.push({"value": null});
+                    values.push({"value": null, "option": null});
                 }
             });
             results.push({"name": name, "values": values})
